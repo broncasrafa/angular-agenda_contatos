@@ -8,7 +8,7 @@ export class Contato {
   sobrenome: String;
   empresa: String;
   aniversario: String;
-  imagem: string;
+  imagem: { url: String, public_id: String };
   enderecos: Array<Endereco>;
   perfis: Array<Perfil>;
   emails: Array<Email>;

@@ -24,13 +24,18 @@ var emailSchema = new Schema({
     email: String
 });
 
+var imagemSchema = new Schema({
+  url: String,
+  public_id: String
+});
+
 var contatoSchema = new Schema({
     data_cadastro: { type: Date, default: Date.now },
     nome: { type: String, require: true },
     sobrenome: String,
     empresa: String,
     //imagem: { data: Buffer, contentType: String },
-    imagem: String,
+    imagem: imagemSchema,
     aniversario: String,
     perfis: [perfilSchema],
     num_telefones: [telefoneSchema],

@@ -34,9 +34,6 @@ cloudinary.config({
 // -----------------------------------------------------------------------------------------
 
 
-
-
-
 router.get('/', function(req, res, next) {
   res.json({ message: 'Seja bem-vindo a API Agenda de Contatos Angular 2/4/5' })
 });
@@ -75,21 +72,23 @@ router.delete('/contatos/:id', function(req, res, next) {
       if(err) {
           res.status(400).json({ message: `Não foi possível remover o contato: ${ err }` })
       }
+
+      if(contato.imagem) {
+        cloudinary.uploader.destroy(contato.imagem.public_id);
+      }
+
       res.status(200).json({ message: 'Contato removido com sucesso' });
   })
 });
 
 /* Save contato (acessar em: http://localhost:3000/api/contatos) */
 router.post('/contatos', function(req, res, next) {
-  // if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
-  //     res.status(400).json({ "message": "Bad request" });
-  // }
-
   var contato = new Contato();
   contato.nome = req.body.nome;
   contato.sobrenome = req.body.sobrenome;
   contato.empresa = req.body.empresa;
   contato.aniversario = req.body.aniversario;
+  contato.imagem = req.body.imagem;
   contato.perfis = req.body.perfis;
   contato.num_telefones = req.body.num_telefones;
   contato.emails = req.body.emails;
@@ -103,29 +102,6 @@ router.post('/contatos', function(req, res, next) {
       console.log(doc);
       res.status(201).json({ message: 'Contato cadastrado com sucesso', data: doc._id });
   });
-
-  // if(req.file) {
-  //   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  //   cloudinary.uploader.upload(req.file.path, function(err, result) {
-  //      if(err) {
-  //        console.log('[ERROR]: ', err);
-  //        res.status(400).json({ message: "Erro ao salvar a imagem, portanto o contato não foi salvo" })
-  //      } else {
-  //        console.log('[CLOUDINARY RESULT]: ', result);
-  //        _contato.imagem = result.url;
-  //        console.log("CONTATO", Contato);
-  //       //  _contato.save(function(err, doc) {
-  //       //       if(err) {
-  //       //           res.status(400).json({ message: `Erro ao cadastrar contato: ${ err }` })
-  //       //       }
-  //       //       res.status(201).json({ message: 'Contato cadastrado com sucesso', data: doc._id });
-  //       //   });
-  //      }
-  //    })
-  //  } else {
-  //    res.status(400).json({ 'message': 'Erro ao salvar a imagem' });
-  //  }
-
 });
 
 /* Update contato (acessar em: http://localhost:3000/api/contatos/id) */

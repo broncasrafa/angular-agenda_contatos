@@ -85,7 +85,8 @@ export class ContatosNovoComponent implements OnInit {
       this.contatosService.createAvatar(this.files).subscribe(resp => {
         console.log(resp);
         if(resp.result) {
-          this.contato.imagem = resp.result.url;
+          this.contato.imagem.url = resp.result.url;
+          this.contato.imagem.public_id = resp.result.public_id;
         }
       });
     }

@@ -1,0 +1,112 @@
+<div class="row">
+    <div class="col-md-6" style="border-right: 1px solid #dedede; background-color: #fbfbfb;">
+      <div class="input-group">
+          <input type="search" class="form-control" name="x" placeholder="Pesquisar por um contato...">
+          <span class="input-group-btn">
+              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>&nbsp;
+              <button class="btn btn-success" type="button" style="margin-left: 10px; border-radius: 2px;" (click)="criarNovoContato()">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+          </span>
+      </div>
+
+
+      <hr />
+      <br />
+
+      <div style="overflow: auto; height: 800px;">
+        <div class="_i4wsm" *ngFor="let contato of contatos">
+          <div class="_ikq0n">
+            <div class="_82odm  _pbvu8">
+                <canvas class="_15vpm" width="60" height="60" style="transform: translate(-5px, -5px); position: absolute; top: 0px; left: 0px; width: 60px; height: 60px;"></canvas>
+                <div class="_pg23k _jpwof _gvoze" style="width: 50px; height: 50px;">
+                    <img class="_rewi8" src="https://instagram.fcgh5-1.fna.fbcdn.net/vp/854f06c98d621617257dbbfe9495439c/5B7D053F/t51.2885-19/11349266_1091678527527083_1384463654_a.jpg" alt="Foto do perfil de {{ contato.nome }}">
+                </div>
+            </div>
+            <div class="_on99m"  style="cursor: pointer" (click)="dadosContato(contato._id)">
+                <div class="_8hjc5">
+                    <div class="_f89xq">
+                        {{ contato.nome }} {{ contato.sobrenome }}
+                    </div>
+                </div>
+                <!--<div class="_ewiye _irzdz">
+                    nome do contato
+                </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+    <div class="col-md-6" *ngIf="!isLoadPage">
+      <div class="form-group">
+        <div class="pull-right" style="padding-bottom: 10px;">
+          <button class="btn btn-primary" role="button" (click)="editarContato(contato._id)">Editar</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="forNome">Nome</label>
+        <input type="text" class="form-control" id="txtNome" placeholder="Nome" [ngModel]="contato.nome" readonly>
+      </div>
+      <div class="form-group">
+        <label for="forSobrenome">Sobrenome</label>
+        <input type="text" class="form-control" id="txtSobrenome" placeholder="Sobrenome" [ngModel]="contato.sobrenome" readonly>
+      </div>
+      <div class="form-group">
+        <label for="forEmpresa">Empresa</label>
+        <input type="text" class="form-control" id="txtEmpresa" placeholder="Empresa" [ngModel]="contato.empresa" readonly>
+      </div>
+      <div class="form-group">
+        <label for="forAniversario">Aniversário</label>
+        <input type="text" class="form-control" id="txtAniversario" placeholder="Aniversário" [ngModel]="contato.aniversario" readonly>
+      </div>
+
+      <div class="bs-callout info">
+        <h4 class="bs-callout-h4">Telefones</h4>
+        <p *ngFor="let tel of contato.num_telefones">
+          <label>
+            {{ tel.numero }}
+          </label>
+        </p>
+      </div>
+      <div class="bs-callout warning">
+        <h4 class="bs-callout-h4">Perfis</h4>
+        <p *ngFor="let per of contato.perfis">
+          <label>
+            {{ per.perfil }}
+          </label>
+        </p>
+      </div>
+      <div class="bs-callout success">
+          <h4 class="bs-callout-h4">Emails</h4>
+          <p *ngFor="let email of contato.emails">
+            <label>
+              {{ email.email }}
+            </label>
+          </p>
+        </div>
+        <div class="bs-callout danger" style="line-height: 20px !important">
+          <h4 class="bs-callout-h4">Endereços</h4>
+          <div *ngFor="let end of contato.enderecos">
+              <strong>Logradouro</strong>: {{ end.logradouro }}<br />
+              <strong>Nº</strong>: {{ end.numero }}<br />
+              <strong>Compl.</strong>: {{ end.complemento }}<br />
+              <strong>Bairro</strong>: {{ end.bairro }}<br />
+              <strong>Cidade</strong>: {{ end.cidade }}<br />
+              <strong>UF</strong>: {{ end.estado }}<br />
+              <strong>CEP</strong>: {{ end.cep }}<br />
+              <hr />
+          </div>
+        </div>
+    </div>
+    <!-- caso não tenha escolhido um contato -->
+    <div class="col-md-6" *ngIf="isLoadPage">
+      <div style="text-align: center">
+        <p class="lead">Nenhum contato selecionado</p>
+      </div>
+    </div>
+  </div>
+
+

@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-4" style="text-align: center; border-right: 1px solid #dedede;">
+      <img class="img img-responsive img-circle img-fluid img-contato" src="https://archive.is/yGP6C/261f645e1bdbf424698b10fd86a5e119ac07eddb" alt="{{ contato.nome }}"/>
+      <h6></h6>
+      <input type="file" class="form-control" />
+    </div>
+    <div class="col-md-8">
+      <div class="form-group">
+        <label for="forNome">Nome</label>
+        <input type="text" class="form-control" id="txtNome" placeholder="Nome" [(ngModel)]="contato.nome">
+      </div>
+      <div class="form-group">
+        <label for="forSobrenome">Sobrenome</label>
+        <input type="text" class="form-control" id="txtSobrenome" placeholder="Sobrenome" [(ngModel)]="contato.sobrenome">
+      </div>
+      <div class="form-group">
+        <label for="forEmpresa">Empresa</label>
+        <input type="text" class="form-control" id="txtEmpresa" placeholder="Empresa" [(ngModel)]="contato.empresa">
+      </div>
+      <div class="form-inline">
+          <label for="exampleInputAniver1">Aniversário</label><br />
+          <select class="form-control" name="dia" [(ngModel)]="selectedDiaValue">
+              <option *ngFor="let dia of dias" [ngValue]="dia.dia">{{ dia.dia }}</option>
+          </select>&nbsp;
+          <select class="form-control" name="mes" [(ngModel)]="selectedMesValue">
+              <option *ngFor="let mes of meses" [ngValue]="mes.mes">{{ mes.descricao }}</option>
+          </select>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="form-group">
+        <div class="pull-right">
+          <input type="button" class="btn btn-sm btn-primary" value="Alterar" />
+          <input type="button" class="btn btn-sm btn-default" value="Cancelar" (click)="voltarPagina()"/>
+        </div>
+      </div>
+    </div>
+  </div>

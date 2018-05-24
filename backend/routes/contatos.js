@@ -80,45 +80,51 @@ router.delete('/contatos/:id', function(req, res, next) {
 });
 
 /* Save contato (acessar em: http://localhost:3000/api/contatos) */
-router.post('/contatos', upload.single('imagem'), function(req, res, next) {
+router.post('/contatos', function(req, res, next) {
   // if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
   //     res.status(400).json({ "message": "Bad request" });
   // }
-  // console.log('entrou na service ↓↓↓↓↓');
-  // console.log('[REQ.FILE]', req.file);
-  // console.log('[REQ.BODY]', req.body);
 
-  var _contato = new Contato();
-  _contato.nome = req.body.nome;
-  _contato.sobrenome = req.body.sobrenome;
-  _contato.empresa = req.body.empresa;
-  _contato.aniversario = req.body.aniversario;
-  _contato.perfis = req.body.perfis;
-  _contato.num_telefones = req.body.num_telefones;
-  _contato.emails = req.body.emails;
-  _contato.enderecos = req.body.enderecos;
+  var contato = new Contato();
+  contato.nome = req.body.nome;
+  contato.sobrenome = req.body.sobrenome;
+  contato.empresa = req.body.empresa;
+  contato.aniversario = req.body.aniversario;
+  contato.perfis = req.body.perfis;
+  contato.num_telefones = req.body.num_telefones;
+  contato.emails = req.body.emails;
+  contato.enderecos = req.body.enderecos;
 
-  if(req.file) {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    cloudinary.uploader.upload(req.file.path, function(err, result) {
-       if(err) {
-         console.log('[ERROR]: ', err);
-         res.status(400).json({ message: "Erro ao salvar a imagem, portanto o contato não foi salvo" })
-       } else {
-         console.log('[CLOUDINARY RESULT]: ', result);
-         _contato.imagem = result.url;
-         console.log("CONTATO", Contato);
-        //  _contato.save(function(err, doc) {
-        //       if(err) {
-        //           res.status(400).json({ message: `Erro ao cadastrar contato: ${ err }` })
-        //       }
-        //       res.status(201).json({ message: 'Contato cadastrado com sucesso', data: doc._id });
-        //   });
-       }
-     })
-   } else {
-     res.status(400).json({ 'message': 'Erro ao salvar a imagem' });
-   }
+  contato.save(function(err, doc) {
+      if(err) {
+        console.log(err);
+          res.status(400).json({ message: `Erro ao cadastrar contato: ${ err }` })
+      }
+      console.log(doc);
+      res.status(201).json({ message: 'Contato cadastrado com sucesso', data: doc._id });
+  });
+
+  // if(req.file) {
+  //   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  //   cloudinary.uploader.upload(req.file.path, function(err, result) {
+  //      if(err) {
+  //        console.log('[ERROR]: ', err);
+  //        res.status(400).json({ message: "Erro ao salvar a imagem, portanto o contato não foi salvo" })
+  //      } else {
+  //        console.log('[CLOUDINARY RESULT]: ', result);
+  //        _contato.imagem = result.url;
+  //        console.log("CONTATO", Contato);
+  //       //  _contato.save(function(err, doc) {
+  //       //       if(err) {
+  //       //           res.status(400).json({ message: `Erro ao cadastrar contato: ${ err }` })
+  //       //       }
+  //       //       res.status(201).json({ message: 'Contato cadastrado com sucesso', data: doc._id });
+  //       //   });
+  //      }
+  //    })
+  //  } else {
+  //    res.status(400).json({ 'message': 'Erro ao salvar a imagem' });
+  //  }
 
 });
 
@@ -200,21 +206,20 @@ router.put('/contatos/:id', function(req, res, next) {
   });
 });
 
+/* Salva a imagem localmente e sobe a imagem para a nuvem no cloudinary e retona a url */
 router.post('/contatos/avatar/upload', upload.single('imagem'), function(req, res, next) {
-     console.log(req.file);
-    //res.status(200).json({ 'message': 'Imagem uploaded com sucesso', 'result': req.file });
 
     if(req.file) {
-     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-     cloudinary.uploader.upload(req.file.path, function(err, result) {
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+      cloudinary.uploader.upload(req.file.path, function(err, result) {
         if(err) {
-          console.log('[ERROR]: ', err);
-        } else {
-          console.log(result);
+          res.status(400).json({ message: "Erro ao salvar a imagem, portanto o contato não foi salvo", result: false })
         }
-      })
+
+        res.status(200).json({ message: "Imagem uploaded com sucesso", result: result });
+      });
     } else {
-      res.status(400).json({ 'message': 'Erro ao salvar a imagem' });
+      res.status(400).json({ message: "Erro ao salvar a imagem, portanto o contato não foi salvo", result: false })
     }
 });
 

@@ -32,18 +32,32 @@ export class ContatosService {
                .map(res => res.json());
   }
 
-  testePost(postData: any, files: File[]) {
+  createAvatar(files: File[]) {
     const head = new Headers();
     const formData: FormData = new FormData();
     formData.append('imagem', files[0], files[0].name);
 
-    if (postData !== '' && postData !== undefined && postData !== null) {
-      for (var property in postData) {
-        if (postData.hasOwnProperty(property)) {
-            formData.append(property, postData[property]);
+    const url =  `${this.baseUrl}/avatar/upload`;
+    return this.http.post(url, formData, { headers: head })
+                    .map(res => res.json());
+  }
+
+  testePost(contato: any, files: File[]) {
+    const head = new Headers();
+    const formData: FormData = new FormData();
+
+    if(files.length > 0) {
+      formData.append('imagem', files[0], files[0].name);
+    }
+
+    if (contato !== '' && contato !== undefined && contato !== null) {
+      for (var property in contato) {
+        if (contato.hasOwnProperty(property)) {
+            formData.append(property, contato[property]);
         }
       }
     }
+    //console.log(contato);
 
     const url =  `${this.baseUrl}`;
     return this.http.post(url, formData, { headers: head }).map(res => res.json());

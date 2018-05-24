@@ -10,6 +10,13 @@
             "name": "Executar o Chrome contra localhost",
             "url": "http://localhost:4200",
             "webRoot": "${workspaceFolder}"
-        }
+        },
+        {
+          "type": "chrome",
+          "request": "launch",
+          "name": "Executar o Chrome contra localhost",
+          "url": "http://localhost:3000",
+          "webRoot": "${workspaceFolder}"
+      }
     ]
 }

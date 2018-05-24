@@ -23,9 +23,7 @@ export class ContatosNovoComponent implements OnInit {
   selectedMesValue: string;
   selectedDiaValue: number;
 
-  files: File[];
-  file: File;
-  objImg: Object;
+  files = new Array<File>();
   telefones: Array<Telefone>;
   perfis: Array<Perfil>;
   emails: Array<Email>;
@@ -84,21 +82,19 @@ export class ContatosNovoComponent implements OnInit {
     this.files = event.target.files;
 
     if (this.files.length > 0) {
-      this.file = this.files[0];
-      // this.objImg = {
-      //   'lastModified': new Date(this.files[0].lastModified),
-      //   'lastModifiedDate': this.files[0].lastModifiedDate,
-      //   'name': this.files[0].name,
-      //   'size': this.files[0].size,
-      //   'type': this.files[0].type
-      // };
+      this.contatosService.createAvatar(this.files).subscribe(resp => {
+        console.log(resp);
+        if(resp.result) {
+          this.contato.imagem = resp.result.url;
+        }
+      });
     }
   }
 
   salvar(contato) {
 
-    if (this.file) {
-      //this.contato.imagem = this.objImg;
+    if (this.files.length > 0) {
+      // this.contato.imagem = this.objImg;
     }
 
     if (this.selectedDiaValue && this.selectedMesValue) {
@@ -139,15 +135,15 @@ export class ContatosNovoComponent implements OnInit {
       }
     }
 
-    // this.contatosService.createContato(this.contato).subscribe(resp => {
-    //   alert('Contato criado com sucesso');
-    //   this.router.navigate([ 'contatos' ]);
-    // });
-
-    this.contatosService.testePost(this.contato, this.files).subscribe(resp => {
+    this.contatosService.createContato(this.contato).subscribe(resp => {
       alert('Contato criado com sucesso');
       this.router.navigate([ 'contatos' ]);
-    })
+    });
+
+    // this.contatosService.testePost(this.contato, this.files).subscribe(resp => {
+    //   alert('Contato criado com sucesso');
+    //   this.router.navigate([ 'contatos' ]);
+    // })
   }
 
   adicionarTelefone(telefone) {
